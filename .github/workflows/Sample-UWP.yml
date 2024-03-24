@@ -22,15 +22,11 @@ jobs:
           .\windows-sdk-setup.exe /quiet /installpath C:\Windows Kits\10
 
       - name: Set up MSYS2
-        run: |
-          # Download and install MSYS2
-          Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-x86_64-latest.exe" -OutFile "msys2-installer.exe"
-          .\msys2-installer.exe -y -d C:\msys2
+        uses: msys2/setup-msys2@v2.2.0
 
       - name: Install MSYS2 packages
         run: |
           # Install necessary packages using pacman
-          $env:Path += ";C:\msys2\usr\bin"
           pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
 
       - name: Build UWP application
@@ -46,6 +42,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: uwp_application
-          path: UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
-
-      # Add more steps as needed for your build process
+          path: UWPApp.msix 
