@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.1 
+        uses: actions/checkout@v4.1.1  # Use version 4.1.1 of actions/checkout
 
       - name: Set up GitHub workspace
         run: |
@@ -20,11 +20,11 @@ jobs:
           cd $GITHUB_WORKSPACE
 
           # Download and install Windows SDK
-          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "sdk/windows-sdk-setup.exe"
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "$GITHUB_WORKSPACE/sdk/windows-sdk-setup.exe"
           .\sdk\windows-sdk-setup.exe /quiet /installpath $GITHUB_WORKSPACE\sdk
 
           # Download and install MSYS2
-          Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-x86_64-latest.exe" -OutFile "msys2/msys2-installer.exe"
+          Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-x86_64-latest.exe" -OutFile "$GITHUB_WORKSPACE/msys2/msys2-installer.exe"
           .\msys2\msys2-installer.exe -y -d $GITHUB_WORKSPACE\msys2
 
       - name: Install MSYS2 packages
