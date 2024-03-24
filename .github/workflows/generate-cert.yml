@@ -3,7 +3,7 @@ name: Generate Certificate
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   generate_certificate:
