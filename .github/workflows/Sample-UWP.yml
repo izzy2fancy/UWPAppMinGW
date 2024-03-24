@@ -1,0 +1,51 @@
+name: UWP Application Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up GitHub workspace
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/sdk
+          mkdir -p $GITHUB_WORKSPACE/msys2
+          cd $GITHUB_WORKSPACE
+
+          # Download and install Windows SDK
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "sdk/windows-sdk-setup.exe"
+          .\sdk\windows-sdk-setup.exe /quiet /installpath $GITHUB_WORKSPACE\sdk
+
+          # Download and install MSYS2
+          Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-x86_64-latest.exe" -OutFile "msys2/msys2-installer.exe"
+          .\msys2\msys2-installer.exe -y -d $GITHUB_WORKSPACE\msys2
+
+      - name: Install MSYS2 packages
+        run: |
+          # Install necessary packages using pacman
+          $env:PATH += ";${env:GITHUB_WORKSPACE}\msys2\usr\bin"
+          pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
+
+      - name: Build UWP application
+        run: |
+          # Navigate to your project directory
+          cd path/to/your/project
+          # Run make to build the application
+          make
+          # Run make to package the application
+          make package
+
+      - name: Save artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: uwp_application
+          path: UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
+
+      # Add more steps as needed for your build process
