@@ -17,7 +17,6 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/sdk
           mkdir -p $GITHUB_WORKSPACE/msys2
-          cd $GITHUB_WORKSPACE
 
           # Download and install Windows SDK
           Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "$GITHUB_WORKSPACE/sdk/windows-sdk-setup.exe"
@@ -35,6 +34,8 @@ jobs:
 
       - name: Build UWP application
         run: |
+          # Navigate to your project directory
+          cd $GITHUB_WORKSPACE
           # Run make to build the application
           make
           # Run make to package the application
@@ -44,4 +45,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: uwp_application
-          path: UWPApp.msix  
+          path: $GITHUB_WORKSPACE/UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
+
+      # Add more steps as needed for your build process
