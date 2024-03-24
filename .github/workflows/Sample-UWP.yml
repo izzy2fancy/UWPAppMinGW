@@ -18,8 +18,10 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/sdk
           mkdir -p $GITHUB_WORKSPACE/msys2
 
-          # Download and install Windows SDK
+          # Download Windows SDK installer
           Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "$GITHUB_WORKSPACE/sdk/windows-sdk-setup.exe"
+
+          # Execute Windows SDK installer
           .\sdk\windows-sdk-setup.exe /quiet /installpath $GITHUB_WORKSPACE\sdk
 
           # Download and install MSYS2
@@ -29,7 +31,7 @@ jobs:
       - name: Install MSYS2 packages
         run: |
           # Install necessary packages using pacman
-          $env:PATH += ";${env:GITHUB_WORKSPACE}\msys2\usr\bin"
+          $env:Path += ";${env:GITHUB_WORKSPACE}\msys2\usr\bin"
           pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
 
       - name: Build UWP application
