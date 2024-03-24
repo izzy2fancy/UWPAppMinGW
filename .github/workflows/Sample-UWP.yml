@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.1  # Use version 4.1.1 of actions/checkout
+        uses: actions/checkout@v4.1.1  
 
       - name: Set up MSYS2
         uses: msys2/setup-msys2@v2.22.0
@@ -22,11 +22,22 @@ jobs:
       - name: Fetch Dependencies
         run: pacman -S --noconfirm unzip make git mingw-w64-x86_64-gcc mingw-w64-x86_64-make python3
 
-      - name: Install Windows SDK
+      - name: Install Chocolatey
+        if: success()  # Install Chocolatey only if not already installed
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+      - name: Download and Install Windows SDK
         shell: pwsh
         run: |
-          # Run the install-sdk.ps1 script, passing the desired SDK version
-          .\install-sdk.ps1 -SdkVersion "10.0.18362.0"
+          # Download the Windows SDK installer
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "windows-sdk-setup.exe"
+          
+          # Execute the installer
+          Start-Process -FilePath "windows-sdk-setup.exe" -Wait
+
+          # Clean up: delete the installer file
+          Remove-Item -Path "windows-sdk-setup.exe"
          
       - name: Build UWP application
         run: |
@@ -41,6 +52,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: uwp_application
-          path: UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
-
-      # Add more steps as needed for your build process
+          path: UWPApp.msix 
