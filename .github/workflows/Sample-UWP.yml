@@ -22,13 +22,10 @@ jobs:
       - name: Fetch Dependencies
         run: pacman -S --noconfirm unzip make git mingw-w64-x86_64-gcc mingw-w64-x86_64-make python3
 
-      - name: Chocolatey Action
-        uses: crazy-max/ghaction-chocolatey@v3.0.0
+      # Install the desired Windows 10 SDK version
+      - uses: GuillaumeFalourd/setup-windows10-sdk-action@v2
         with:
-          args: install -y
-
-      - name: Install Windows SDK
-        run: choco install windows-sdk --version=10.0.18362.0 -y
+         sdk-version: '10.0.18362.0'
 
       - name: Build UWP application
         run: |
