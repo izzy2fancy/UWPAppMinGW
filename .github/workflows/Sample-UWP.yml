@@ -24,12 +24,12 @@ jobs:
 
       - name: Download and Install Windows SDK
         run: |
-          # Download Windows SDK installer
-          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "windows-sdk-setup.exe"
+          # Download Windows SDK installer using curl
+          curl -LO "https://go.microsoft.com/fwlink/?linkid=2261842"
 
           # Execute Windows SDK installer
-          .\windows-sdk-setup.exe /quiet /installpath C:\Windows Kits\10
-
+          ./windows-sdk-setup.exe /quiet /installpath C:\Windows Kits\10
+          
       - name: Build UWP application
         run: |
           # Navigate to your project directory
