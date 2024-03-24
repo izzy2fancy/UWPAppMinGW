@@ -13,6 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.1  # Use version 4.1.1 of actions/checkout
 
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2.22.0
+
+      - name: Fetch Dependencies
+        run: pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
+
       - name: Download and Install Windows SDK
         run: |
           # Download Windows SDK installer
@@ -20,14 +26,6 @@ jobs:
 
           # Execute Windows SDK installer
           .\windows-sdk-setup.exe /quiet /installpath C:\Windows Kits\10
-
-      - name: Set up MSYS2
-        uses: msys2/setup-msys2@v2.2.0
-
-      - name: Install MSYS2 packages
-        run: |
-          # Install necessary packages using pacman
-          pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
 
       - name: Build UWP application
         run: |
@@ -42,4 +40,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: uwp_application
-          path: UWPApp.msix 
+          path: UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
+
+      # Add more steps as needed for your build process
