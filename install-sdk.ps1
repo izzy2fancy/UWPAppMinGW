@@ -3,7 +3,7 @@ param(
 )
 
 # Define the URL for the Windows SDK installer
-$SdkUrl = "https://go.microsoft.com/fwlink/?linkid=2261842"
+$SdkUrl = "https://go.microsoft.com/fwlink/?linkid=2083338"
 
 # Define the path where the SDK installer will be saved
 $InstallerPath = "$env:TEMP\windows-sdk-setup.exe"
