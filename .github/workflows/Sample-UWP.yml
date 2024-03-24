@@ -22,8 +22,13 @@ jobs:
       - name: Fetch Dependencies
         run: pacman -S --noconfirm unzip make git mingw-w64-x86_64-gcc mingw-w64-x86_64-make python3
 
+      - name: Install Chocolatey
+        if: success()  # Install Chocolatey only if not already installed
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
       - name: Install Windows SDK
-        run: choco install -y
+        run: choco install windows-sdk --version=10.0.18362.0 -y
          
       - name: Build UWP application
         run: |
