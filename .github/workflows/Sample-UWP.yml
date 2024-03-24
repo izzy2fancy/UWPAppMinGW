@@ -24,9 +24,12 @@ jobs:
 
       - name: Chocolatey Action
         uses: crazy-max/ghaction-chocolatey@v3.0.0
+        with:
+          args: install -y
 
       - name: Install Windows SDK
         run: choco install windows-sdk --version=10.0.18362.0 -y
+
       - name: Build UWP application
         run: |
           # Navigate to your project directory
