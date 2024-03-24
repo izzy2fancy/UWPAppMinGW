@@ -20,6 +20,6 @@ rem New-SelfSignedCertificate -Type Custom -Subject "CN=MyCompany, O=MyCompany, 
 rem
 rem Then copy the certificate hash here: 
 rem
-set CERTIFICATE_SHA=0123456789ABCDEFFEDCBA987654321012345678
+set CERTIFICATE_SHA=CED710E363A2486C46828F885649F31CFEAD539B
 
 SignTool sign /v /a /sha1 %CERTIFICATE_SHA% /fd SHA256 UWPApp.msix
