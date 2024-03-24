@@ -22,14 +22,11 @@ jobs:
       - name: Fetch Dependencies
         run: pacman -S --noconfirm unzip make git mingw-w64-x86_64-gcc mingw-w64-x86_64-make python3
 
-      - name: Download and Install Windows SDK
+      - name: Install Windows SDK
+        shell: pwsh
         run: |
-         # Download Windows SDK installer using wget
-         wget "https://go.microsoft.com/fwlink/?linkid=2261842" -O windows-sdk-setup.exe
-
-         # Execute Windows SDK installer
-         cd $GITHUB_WORKSPACE
-         ./windows-sdk-setup.exe
+          # Run the install-sdk.ps1 script, passing the desired SDK version
+          .\install-sdk.ps1 -SdkVersion "10.0.18362.0"
          
       - name: Build UWP application
         run: |
