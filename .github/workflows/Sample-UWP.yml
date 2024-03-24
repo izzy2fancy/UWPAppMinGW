@@ -13,25 +13,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.1  # Use version 4.1.1 of actions/checkout
 
-      - name: Set up GitHub workspace
+      - name: Download and Install Windows SDK
         run: |
-          mkdir -p $GITHUB_WORKSPACE/sdk
-          mkdir -p $GITHUB_WORKSPACE/msys2
-
           # Download Windows SDK installer
-          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "$GITHUB_WORKSPACE/sdk/windows-sdk-setup.exe"
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2261842" -OutFile "windows-sdk-setup.exe"
 
           # Execute Windows SDK installer
-          .\sdk\windows-sdk-setup.exe /quiet /installpath $GITHUB_WORKSPACE\sdk
+          .\windows-sdk-setup.exe /quiet /installpath C:\Windows Kits\10
 
+      - name: Set up MSYS2
+        run: |
           # Download and install MSYS2
-          Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-x86_64-latest.exe" -OutFile "$GITHUB_WORKSPACE/msys2/msys2-installer.exe"
-          .\msys2\msys2-installer.exe -y -d $GITHUB_WORKSPACE\msys2
+          Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-x86_64-latest.exe" -OutFile "msys2-installer.exe"
+          .\msys2-installer.exe -y -d C:\msys2
 
       - name: Install MSYS2 packages
         run: |
           # Install necessary packages using pacman
-          $env:Path += ";${env:GITHUB_WORKSPACE}\msys2\usr\bin"
+          $env:Path += ";C:\msys2\usr\bin"
           pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
 
       - name: Build UWP application
@@ -47,6 +46,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: uwp_application
-          path: $GITHUB_WORKSPACE/UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
+          path: UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
 
       # Add more steps as needed for your build process
