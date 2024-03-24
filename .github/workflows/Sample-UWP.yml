@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.1 
 
       - name: Set up GitHub workspace
         run: |
@@ -35,8 +35,6 @@ jobs:
 
       - name: Build UWP application
         run: |
-          # Navigate to your project directory
-          cd path/to/your/project
           # Run make to build the application
           make
           # Run make to package the application
@@ -46,6 +44,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: uwp_application
-          path: UWPApp.msix  # Assuming UWPApp.msix is located in the root directory
-
-      # Add more steps as needed for your build process
+          path: UWPApp.msix  
