@@ -29,7 +29,7 @@ jobs:
 
          # Execute Windows SDK installer
          cd $GITHUB_WORKSPACE
-         ./windows-sdk-setup.exe /installpath C:\Windows Kits\10
+         ./windows-sdk-setup.exe
          
       - name: Build UWP application
         run: |
